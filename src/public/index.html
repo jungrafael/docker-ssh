@@ -26,7 +26,7 @@
       cursorBlink: true
     });
 
-    evt = new EventSource("/api/v1/terminal/stream/");
+    evt = new EventSource("./api/v1/terminal/stream/");
     evt.addEventListener('connectionId', function(event) {
       connectionId = event.data;
       term.write("Connection established\r\n");
@@ -46,7 +46,7 @@
     });
     term.on('data', function(data) {
       if (evt.readyState === EventSource.OPEN) {
-        $.post("/api/v1/terminal/send/" + connectionId, {data: data});
+        $.post("./api/v1/terminal/send/" + connectionId, {data: data});
       }
     });
     term.on('title', function(title) {
@@ -61,7 +61,7 @@
     doneResizing = function() {
       maxTermSize = computeMaxTerminalSize();
       $.post(
-        "/api/v1/terminal/resize-window/" + connectionId,
+        "./api/v1/terminal/resize-window/" + connectionId,
         maxTermSize,
         function(data){
           if(data && data.cols && data.rows){
